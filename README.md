@@ -1,16 +1,59 @@
-# React + Vite
+# 🏋️ Fit-Zone
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern fitness website built with React and Vite, showcasing workout plans, gym programs, trainers, and a healthy lifestyle UI.
 
-Currently, two official plugins are available:
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## ✨ Overview
+Fit-Zone is a modern fitness web application built with React and Vite.  
+It provides users with workout programs, gym schedules, trainers, and testimonials in a clean responsive UI.
+You can view a live demo [here](https://your-live-demo-link.com).
 
-## React Compiler
+## 🚀 Features
+- Workout plans
+- Trainer profiles
+- Gym schedule
+- Testimonials
+- Fully responsive design
+- Fast performance with Vite
+- Reusable React components
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Tech Stack
+- React
+- Vite
+- JavaScript
+- Tailwind CSS
+- React Router
 
-## Expanding the ESLint configuration
+## 📁 Project Structure
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+src/
+├── assets/      # Images, fonts, and other static assets
+├── components/  # Reusable React components (e.g., Button, Navbar)
+├── pages/       # Main pages of the application (e.g., Home, About)
+├── App.jsx      # Main application component and routing setup
+└── main.jsx     # Entry point of the React application
+
+## ⚙️ Setup
+To get a local copy up and running, follow these simple steps.
+
+1. Clone the repo
+
+```bash
+git clone https://github.com/your_username/fit-zone.git
+```
+
+2. Navigate to the project directory
+
+```bash
+cd fit-zone
+```
+3. Install NPM packages
+
+```bash
+npm install
+```
+4. Run the development server
+
+```bash
+npm run dev
