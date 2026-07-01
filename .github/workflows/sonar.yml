@@ -37,4 +37,4 @@ jobs:
         with:
           args: >
             -Dsonar.projectKey=Fit-Zone
-            -Dsonar.organization=Noha Ahmed
+            -Dsonar.organization=nohacode-lab
