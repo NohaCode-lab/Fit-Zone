@@ -22,7 +22,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 'lts/*'
+          node-version: "lts/*"
 
       - name: Install dependencies
         run: npm install
@@ -33,7 +33,7 @@ jobs:
       - name: SonarCloud Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_TOKEN: ${{b32419d4f41371450cadc3509a7cf7f7c2111d5e}}
         with:
           args: >
             -Dsonar.projectKey=Fit-Zone
