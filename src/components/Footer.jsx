@@ -1,5 +1,7 @@
 import React from 'react';
-import { Star, Instagram, Linkedin } from "lucide-react";
+
+import { Star } from "lucide-react";
+import { FaInstagram, FaLinkedin } from "react-icons/fa";
 
 import alexImage from '../assets/images/alex.jpg';
 import sarahImage from '../assets/images/sarah.jpg';
@@ -47,10 +49,10 @@ const Trainers = () => {
                 <p className="text-gray-400 text-sm mb-4">{trainer.bio}</p>
                 <div className="flex gap-3">
                   <button className="p-2 bg-white/10 rounded-full hover:bg-primary/30 transition">
-                    <Instagram className="w-4 h-4" />
+                    <FaInstagram className="w-4 h-4" />
                   </button>
                   <button className="p-2 bg-white/10 rounded-full hover:bg-primary/30 transition">
-                    <Linkedin className="w-4 h-4" />
+                    <FaLinkedin className="w-4 h-4" />
                   </button>
                 </div>
               </div>
