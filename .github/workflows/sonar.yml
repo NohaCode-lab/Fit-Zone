@@ -33,8 +33,7 @@ jobs:
       - name: SonarCloud Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
-          SONAR_TOKEN: ${{b32419d4f41371450cadc3509a7cf7f7c2111d5e}}
-        with:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           args: >
             -Dsonar.projectKey=Fit-Zone
             -Dsonar.organization=nohacode-lab
