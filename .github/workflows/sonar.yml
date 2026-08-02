@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-
   pull_request:
     branches:
       - main
@@ -12,29 +11,38 @@ on:
 jobs:
   sonar:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js
+      - name: Setup Node.js (LTS v22)
         uses: actions/setup-node@v4
         with:
-          node-version: "lts/*"
+          node-version: 22
+          cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+
+      - name: Run ESLint Linter
+        run: npm run lint
+
+      - name: Run Vitest Tests
+        run: npm test
 
       - name: Build project
         run: npm run build
 
       - name: SonarCloud Scan
-        uses: SonarSource/sonarqube-scan-action@v6
+        if: ${{ secrets.SONAR_TOKEN != '' }}
+        uses: SonarSource/sonarcloud-github-action@v3.1.0
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
             -Dsonar.projectKey=Fit-Zone
             -Dsonar.organization=nohacode-lab
+            -Dsonar.sources=src
