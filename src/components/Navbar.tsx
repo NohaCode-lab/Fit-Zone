@@ -10,12 +10,12 @@ interface NavLink {
 }
 
 const Logo: React.FC = () => (
-  <div className="flex items-center gap-2 group cursor-pointer">
+  <div className="flex items-center gap-2.5 group cursor-pointer">
     <div className="relative">
-      <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent blur-md opacity-70 group-hover:opacity-100 transition-opacity rounded-full"></div>
-      <Dumbbell className="relative w-8 h-8 text-white stroke-[1.5]" />
+      <div className="absolute inset-0 bg-cta-gradient blur-md opacity-70 group-hover:opacity-100 transition-opacity rounded-full"></div>
+      <Dumbbell className="relative w-8 h-8 text-primary stroke-[2]" />
     </div>
-    <span className="text-2xl font-black tracking-tight">
+    <span className="text-2xl font-black tracking-tight text-white">
       Fit<span className="gradient-text">Zone</span>
     </span>
   </div>
@@ -36,7 +36,7 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      <nav className="fixed w-full z-40 bg-dark/80 backdrop-blur-xl border-b border-white/10">
+      <nav className="fixed w-full z-40 bg-dark/90 backdrop-blur-xl border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16 md:h-20">
             <Link to="/" className="flex items-center">
@@ -49,7 +49,7 @@ const Navbar: React.FC = () => {
                 <a
                   key={link.name}
                   href={link.href}
-                  className="text-gray-300 hover:text-primary transition-colors duration-200 font-medium text-sm"
+                  className="text-text-secondary hover:text-primary transition-colors duration-200 font-bold text-sm"
                 >
                   {link.name}
                 </a>
@@ -59,13 +59,13 @@ const Navbar: React.FC = () => {
                 <div className="flex items-center gap-4">
                   <Link
                     to="/dashboard"
-                    className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-full text-xs font-bold text-white transition"
+                    className="flex items-center gap-2 px-4 py-2 bg-surface hover:bg-surface/80 border border-border rounded-full text-xs font-black text-white transition shadow-sm"
                   >
-                    <LayoutDashboard size={14} /> {user?.firstName || 'Dashboard'}
+                    <LayoutDashboard size={14} className="text-primary" /> {user?.firstName || 'Dashboard'}
                   </Link>
                   <button
                     onClick={logout}
-                    className="p-2 text-gray-400 hover:text-red-400 rounded-full hover:bg-white/5 transition"
+                    className="p-2 text-text-muted hover:text-error rounded-full hover:bg-surface transition"
                     title="Sign Out"
                   >
                     <LogOut size={18} />
@@ -74,7 +74,7 @@ const Navbar: React.FC = () => {
               ) : (
                 <button
                   onClick={() => setIsLoginOpen(true)}
-                  className="btn-primary text-sm py-2 px-5 flex items-center gap-2"
+                  className="btn-primary text-sm py-2.5 px-6 flex items-center gap-2 font-black"
                 >
                   <UserIcon size={16} /> Sign In
                 </button>
@@ -85,7 +85,7 @@ const Navbar: React.FC = () => {
             <div className="md:hidden">
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="text-gray-300 hover:text-white focus:outline-none"
+                className="text-text-secondary hover:text-white focus:outline-none"
                 aria-label="Toggle navigation menu"
               >
                 {isOpen ? <X size={28} /> : <Menu size={28} />}
@@ -95,14 +95,14 @@ const Navbar: React.FC = () => {
 
           {/* Mobile Menu */}
           {isOpen && (
-            <div className="md:hidden py-4 border-t border-white/10">
+            <div className="md:hidden py-4 border-t border-border bg-dark/95">
               <div className="flex flex-col space-y-4 pb-4">
                 {navLinks.map((link) => (
                   <a
                     key={link.name}
                     href={link.href}
                     onClick={() => setIsOpen(false)}
-                    className="text-gray-300 hover:text-primary transition-colors duration-200 font-medium px-2 text-sm"
+                    className="text-text-secondary hover:text-primary transition-colors duration-200 font-bold px-2 text-sm"
                   >
                     {link.name}
                   </a>

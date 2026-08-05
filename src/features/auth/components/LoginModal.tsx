@@ -48,25 +48,25 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-      <div className="relative w-full max-w-md glass-card p-8 rounded-3xl border border-white/20 shadow-2xl">
+      <div className="relative w-full max-w-md glass-card p-8 rounded-3xl border border-border shadow-2xl">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 text-gray-400 hover:text-white rounded-full bg-white/5 transition"
+          className="absolute top-4 right-4 p-2 text-text-muted hover:text-white rounded-full bg-surface transition"
           aria-label="Close dialog"
         >
           <X size={20} />
         </button>
 
         <div className="text-center mb-6">
-          <div className="inline-flex p-3 bg-primary/20 rounded-full mb-3 text-primary">
+          <div className="inline-flex p-3 bg-primary/20 rounded-2xl mb-3 text-primary">
             <Dumbbell size={28} />
           </div>
-          <h2 className="text-2xl font-bold">Sign In to <span className="gradient-text">FitZone</span></h2>
-          <p className="text-gray-400 text-xs mt-1">Access your AI fitness dashboard & workout programs</p>
+          <h2 className="text-2xl font-black text-white">Sign In to <span className="gradient-text">FitZone</span></h2>
+          <p className="text-text-muted text-xs mt-1">Access your AI fitness dashboard & workout programs</p>
         </div>
 
         {error && (
-          <div className="mb-4 p-3 bg-red-500/20 border border-red-500/30 rounded-xl flex items-center gap-2 text-red-400 text-xs">
+          <div className="mb-4 p-3 bg-error/20 border border-error/30 rounded-xl flex items-center gap-2 text-error text-xs font-bold">
             <AlertCircle size={16} />
             {error}
           </div>
@@ -74,34 +74,34 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-extrabold text-text-secondary uppercase tracking-wider mb-1.5">
               Email Address
             </label>
             <div className="relative">
-              <Mail className="absolute left-3.5 top-3.5 w-4 h-4 text-gray-400" />
+              <Mail className="absolute left-3.5 top-3.5 w-4 h-4 text-text-muted" />
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary transition"
+                className="input-field pl-10"
                 placeholder="name@example.com"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-extrabold text-text-secondary uppercase tracking-wider mb-1.5">
               Password
             </label>
             <div className="relative">
-              <Lock className="absolute left-3.5 top-3.5 w-4 h-4 text-gray-400" />
+              <Lock className="absolute left-3.5 top-3.5 w-4 h-4 text-text-muted" />
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary transition"
+                className="input-field pl-10"
                 placeholder="••••••••"
               />
             </div>
@@ -110,7 +110,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
           <button
             type="submit"
             disabled={loading}
-            className="btn-primary w-full py-3 mt-2 font-bold shadow-lg shadow-primary/30 disabled:opacity-50"
+            className="btn-primary w-full py-3.5 mt-2 font-black shadow-lg shadow-primary/30"
           >
             {loading ? 'Authenticating...' : 'Sign In'}
           </button>
