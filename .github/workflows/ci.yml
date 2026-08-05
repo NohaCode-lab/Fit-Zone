@@ -1,32 +1,80 @@
-name: Fit-Zone Production CI Pipeline
+name: Fit-Zone SaaS Production CI/CD Pipeline
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, release/* ]
   pull_request:
     branches: [ main ]
 
 jobs:
-  quality-gate:
+  frontend-build-and-test:
+    name: Frontend Quality & Type Audit
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js Environment (LTS v22)
+      - name: Setup Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 20
           cache: 'npm'
 
-      - name: Install Dependencies
+      - name: Install Frontend Dependencies
         run: npm ci
 
-      - name: Run ESLint Linter
+      - name: Code Linting
         run: npm run lint
 
-      - name: Run Vitest Unit Tests
-        run: npm test
+      - name: TypeScript Type-Check
+        run: npm run typecheck
 
-      - name: Build Production Bundle
+      - name: Unit & Component Tests
+        run: npm run test
+
+      - name: Production Bundle Verification
         run: npm run build
+
+  backend-build-and-test:
+    name: NestJS Backend & Database Verification
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: 'backend/package-lock.json'
+
+      - name: Install Backend Dependencies
+        run: |
+          cd backend
+          npm ci
+
+      - name: Generate Prisma Client
+        run: |
+          cd backend
+          npx prisma generate
+
+      - name: NestJS Server Build
+        run: |
+          cd backend
+          npm run build
+
+  docker-security-scan:
+    name: Security & Container Scan
+    needs: [frontend-build-and-test, backend-build-and-test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Trivy Security Vulnerability Scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          ignore-unfixed: true
+          severity: 'CRITICAL,HIGH'
+
+      - name: Validate Docker Compose Orchestration
+        run: docker compose config

@@ -1,0 +1,296 @@
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [pgvector(map: "vector")]
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+enum Role {
+  USER
+  TRAINER
+  ADMIN
+}
+
+enum SubscriptionStatus {
+  INACTIVE
+  ACTIVE
+  PAST_DUE
+  CANCELED
+}
+
+enum Difficulty {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+model User {
+  id               String            @id @default(uuid())
+  email            String            @unique
+  passwordHash     String
+  refreshTokenHash String?
+  role             Role              @default(USER)
+  deletedAt        DateTime?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  profile          Profile?
+  trainer          Trainer?
+  subscriptions    Subscription[]
+  payments         Payment[]
+  bookings         Booking[]
+  workoutSessions  WorkoutSession[]
+  progressRecords  ProgressTracking[]
+  aiConversations  AIConversation[]
+  reviews          Review[]
+  notifications    Notification[]
+
+  @@index([email])
+  @@index([role])
+}
+
+model Profile {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  firstName   String
+  lastName    String
+  avatarUrl   String?
+  heightCm    Float?
+  weightKg    Float?
+  fitnessGoal String?
+  updatedAt   DateTime @updatedAt
+}
+
+model Trainer {
+  id            String             @id @default(uuid())
+  userId        String             @unique
+  user          User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name          String
+  roleTitle     String
+  bio           String             @db.Text
+  imageUrl      String
+  rating        Float              @default(5.0)
+  hourlyRateEur Decimal            @db.Decimal(10, 2)
+  specialties   TrainerSpecialty[]
+  programs      WorkoutProgram[]
+  bookings      Booking[]
+  classSchedules ClassSchedule[]
+
+  @@index([userId])
+}
+
+model TrainerSpecialty {
+  id        String  @id @default(uuid())
+  trainerId String
+  trainer   Trainer @relation(fields: [trainerId], references: [id], onDelete: Cascade)
+  name      String
+}
+
+model WorkoutCategory {
+  id       String           @id @default(uuid())
+  name     String           @unique
+  programs WorkoutProgram[]
+}
+
+model WorkoutProgram {
+  id              String           @id @default(uuid())
+  trainerId       String
+  trainer         Trainer          @relation(fields: [trainerId], references: [id], onDelete: Cascade)
+  categoryId      String?
+  category        WorkoutCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  title           String
+  description     String           @db.Text
+  difficulty      Difficulty       @default(INTERMEDIATE)
+  durationWeeks   Int
+  exercises       Exercise[]
+  workoutSessions WorkoutSession[]
+  createdAt       DateTime         @default(now())
+}
+
+model Exercise {
+  id          String                  @id @default(uuid())
+  programId   String
+  program     WorkoutProgram          @relation(fields: [programId], references: [id], onDelete: Cascade)
+  name        String
+  muscleGroup String
+  sets        Int
+  reps        Int
+  restSec     Int
+  videoUrl    String?
+  embedding   Unsupported("vector")?
+}
+
+model ExerciseKnowledge {
+  id          String                  @id @default(uuid())
+  title       String
+  category    String
+  content     String                  @db.Text
+  embedding   Unsupported("vector")?
+  createdAt   DateTime                @default(now())
+
+  @@index([category])
+}
+
+model NutritionKnowledge {
+  id          String                  @id @default(uuid())
+  title       String
+  macroCategory String
+  content     String                  @db.Text
+  embedding   Unsupported("vector")?
+  createdAt   DateTime                @default(now())
+
+  @@index([macroCategory])
+}
+
+model RecoveryKnowledge {
+  id          String                  @id @default(uuid())
+  title       String
+  technique   String
+  content     String                  @db.Text
+  embedding   Unsupported("vector")?
+  createdAt   DateTime                @default(now())
+
+  @@index([technique])
+}
+
+model ClassSchedule {
+  id          String    @id @default(uuid())
+  trainerId   String
+  trainer     Trainer   @relation(fields: [trainerId], references: [id], onDelete: Cascade)
+  className   String
+  dayOfWeek   String
+  startTime   String
+  duration    String
+  capacity    Int       @default(20)
+  enrolled    Int       @default(0)
+  bookings    Booking[]
+
+  @@index([dayOfWeek, trainerId])
+}
+
+model WorkoutSession {
+  id             String          @id @default(uuid())
+  userId         String
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  programId      String?
+  program        WorkoutProgram? @relation(fields: [programId], references: [id], onDelete: SetNull)
+  startedAt      DateTime        @default(now())
+  completedAt    DateTime?
+  caloriesBurned Int?
+  notes          String?         @db.Text
+}
+
+model Booking {
+  id              String         @id @default(uuid())
+  userId          String
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  trainerId       String
+  trainer         Trainer        @relation(fields: [trainerId], references: [id], onDelete: Cascade)
+  classScheduleId String?
+  classSchedule   ClassSchedule? @relation(fields: [classScheduleId], references: [id], onDelete: SetNull)
+  scheduledAt     DateTime
+  status          String         @default("CONFIRMED")
+  deletedAt       DateTime?
+  createdAt       DateTime       @default(now())
+
+  @@index([scheduledAt, trainerId])
+  @@index([userId])
+}
+
+model SubscriptionPlan {
+  id            String         @id @default(uuid())
+  name          String
+  priceEur      Decimal        @db.Decimal(10, 2)
+  billingPeriod String         @default("/month")
+  description   String
+  features      String[]
+  isPopular     Boolean        @default(false)
+  tier          String
+  subscriptions Subscription[]
+}
+
+model Subscription {
+  id                   String             @id @default(uuid())
+  userId               String
+  user                 User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  planId               String
+  plan                 SubscriptionPlan   @relation(fields: [planId], references: [id], onDelete: Cascade)
+  stripeCustomerId     String?
+  stripeSubscriptionId String?            @unique
+  status               SubscriptionStatus @default(ACTIVE)
+  currentPeriodEnd     DateTime
+  deletedAt            DateTime?
+  createdAt            DateTime           @default(now())
+
+  @@index([userId])
+  @@index([status])
+}
+
+model Payment {
+  id              String    @id @default(uuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stripePaymentId String    @unique
+  amountEur       Decimal   @db.Decimal(10, 2)
+  status          String
+  deletedAt       DateTime?
+  createdAt       DateTime  @default(now())
+
+  @@index([userId])
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  role      String
+  quote     String   @db.Text
+  avatarUrl String
+  rating    Int      @default(5)
+  isApproved Boolean @default(true)
+  createdAt DateTime @default(now())
+}
+
+model ProgressTracking {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recordedAt DateTime @default(now())
+  weightKg   Float
+  bodyFatPct Float?
+  notes      String?
+}
+
+model AIConversation {
+  id        String      @id @default(uuid())
+  userId    String
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  createdAt DateTime    @default(now())
+  messages  AIMessage[]
+}
+
+model AIMessage {
+  id             String         @id @default(uuid())
+  conversationId String
+  conversation   AIConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender         String
+  content        String         @db.Text
+  createdAt      DateTime       @default(now())
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}

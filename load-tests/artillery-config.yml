@@ -1,0 +1,28 @@
+config:
+  target: 'http://localhost:3000/api/v1'
+  phases:
+    - duration: 60
+      arrivalRate: 10
+      rampTo: 50
+      name: Warm up phase
+    - duration: 120
+      arrivalRate: 50
+      rampTo: 100
+      name: High Concurrency Spike Test
+  defaults:
+    headers:
+      content-type: 'application/json'
+
+scenarios:
+  - name: 'Member Session Booking & AI Guidance Flow'
+    flow:
+      - get:
+          url: '/trainers'
+      - get:
+          url: '/schedule'
+      - post:
+          url: '/ai/coach'
+          json:
+            message: 'What is the optimal protein target for endurance recovery?'
+      - get:
+          url: '/subscriptions/plans'

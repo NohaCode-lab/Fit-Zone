@@ -1,0 +1,41 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "id": 2,
+  "panels": [
+    {
+      "title": "Gemini AI RAG Requests",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 8, "x": 0, "y": 0 },
+      "targets": [
+        {
+          "expr": "ai_requests_total"
+        }
+      ]
+    },
+    {
+      "title": "Total Tokens Consumed",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 8, "x": 8, "y": 0 },
+      "targets": [
+        {
+          "expr": "ai_tokens_used_total"
+        }
+      ]
+    },
+    {
+      "title": "Estimated Gemini Cost ($)",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 8, "x": 16, "y": 0 },
+      "targets": [
+        {
+          "expr": "ai_tokens_used_total * 0.000002"
+        }
+      ]
+    }
+  ],
+  "title": "Fit-Zone AI Engine Monitoring",
+  "uid": "fitzone-ai-mon"
+}

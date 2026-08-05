@@ -1,0 +1,38 @@
+# Node dependencies
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build output
+dist
+build
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Version control
+.git
+.github
+.gitignore
+
+# IDE & Editor settings
+.vscode
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Testing & Coverage
+coverage
+.vitest
+
+# OS metadata
+.DS_Store
+Thumbs.db

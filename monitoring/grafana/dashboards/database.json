@@ -1,0 +1,31 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "id": 3,
+  "panels": [
+    {
+      "title": "PostgreSQL Query Duration (s)",
+      "type": "gauge",
+      "gridPos": { "h": 6, "w": 12, "x": 0, "y": 0 },
+      "targets": [
+        {
+          "expr": "db_query_duration_seconds"
+        }
+      ]
+    },
+    {
+      "title": "Slow Query Counter (>200ms)",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 12, "x": 12, "y": 0 },
+      "targets": [
+        {
+          "expr": "db_slow_queries_total"
+        }
+      ]
+    }
+  ],
+  "title": "Fit-Zone Database Monitoring",
+  "uid": "fitzone-db-mon"
+}
