@@ -17,6 +17,16 @@
 
 ---
 
+## 📸 Application Screenshots
+
+![Fit-Zone Member Dashboard & AI Fitness Coach](docs/images/dashboard_preview.jpg)
+*Figure 1: Fit-Zone Member Portal showing Active Fitness Analytics & RAG Vector AI Coach Chat*
+
+![Fit-Zone Responsive Interface Showcase](docs/images/mobile_preview.jpg)
+*Figure 2: Multi-device Responsive Interface featuring Dark & Light Theme Switcher*
+
+---
+
 ## 1. Project Overview
 
 **Fit-Zone** is an end-to-end, multi-tenant SaaS platform engineered to streamline gym management, personal training, client scheduling, and AI-driven personalized fitness coaching.
