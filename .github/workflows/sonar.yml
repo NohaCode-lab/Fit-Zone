@@ -23,17 +23,32 @@ jobs:
           node-version: 22
           cache: 'npm'
 
-      - name: Install dependencies
+      - name: Install Frontend Dependencies
         run: npm ci
+
+      - name: Install Backend Dependencies
+        run: |
+          cd backend
+          npm ci
 
       - name: Run ESLint Linter
         run: npm run lint
 
-      - name: Run Vitest Tests
+      - name: Run Frontend Tests
         run: npm test
 
-      - name: Build project
+      - name: Run Backend Tests
+        run: |
+          cd backend
+          npm test
+
+      - name: Build Frontend Project
         run: npm run build
+
+      - name: Build Backend Project
+        run: |
+          cd backend
+          npm run build
 
       - name: SonarCloud Scan
         if: ${{ secrets.SONAR_TOKEN != '' }}
@@ -45,4 +60,4 @@ jobs:
           args: >
             -Dsonar.projectKey=Fit-Zone
             -Dsonar.organization=nohacode-lab
-            -Dsonar.sources=src
+            -Dsonar.sources=src,backend/src
