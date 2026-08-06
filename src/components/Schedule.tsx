@@ -10,7 +10,7 @@ const Schedule: React.FC = () => {
   const tabs: DayTab[] = ['Monday', 'Wednesday', 'Friday', 'Weekend'];
 
   return (
-    <section id="schedule" className="py-20 bg-gradient-to-b from-dark to-dark/90">
+    <section id="schedule" className="py-20 bg-dark transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <span className="text-primary font-semibold tracking-wide uppercase text-sm">Weekly Schedule</span>
@@ -29,7 +29,7 @@ const Schedule: React.FC = () => {
               className={`px-6 py-2.5 rounded-full font-semibold transition-all duration-300 ${
                 activeTab === day
                   ? 'bg-gradient-to-r from-primary to-accent text-white shadow-lg'
-                  : 'bg-white/5 text-gray-300 hover:bg-white/10 border border-white/10'
+                  : 'bg-surface text-text-secondary hover:bg-surface/80 border border-border'
               }`}
             >
               {day}
@@ -52,19 +52,19 @@ const Schedule: React.FC = () => {
                   <div className="bg-primary/20 p-2 rounded-lg group-hover:bg-primary/30 transition">
                     <Calendar className="w-5 h-5 text-primary" />
                   </div>
-                  <h3 className="text-xl font-bold">{item.class}</h3>
+                  <h3 className="text-xl font-bold text-text-primary">{item.class}</h3>
                 </div>
                 <div className="space-y-3 mt-4">
-                  <div className="flex items-center gap-2 text-gray-300">
+                  <div className="flex items-center gap-2 text-text-secondary">
                     <Clock className="w-4 h-4 text-primary/70" />
-                    <span className="text-sm">{item.time} • {item.duration}</span>
+                    <span className="text-sm font-medium">{item.time} • {item.duration}</span>
                   </div>
-                  <div className="flex items-center gap-2 text-gray-300">
+                  <div className="flex items-center gap-2 text-text-secondary">
                     <User className="w-4 h-4 text-primary/70" />
-                    <span className="text-sm">Trainer: {item.trainer}</span>
+                    <span className="text-sm font-medium">Trainer: {item.trainer}</span>
                   </div>
                 </div>
-                <button className="mt-6 text-primary text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
+                <button className="mt-6 text-primary text-sm font-bold flex items-center gap-1 group-hover:gap-2 transition-all">
                   Book Spot <ChevronRight className="w-4 h-4" />
                 </button>
               </div>

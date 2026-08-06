@@ -6,7 +6,7 @@ const Pricing: React.FC = () => {
   const { data: plans, isLoading, isError } = usePricing();
 
   return (
-    <section id="pricing" className="py-20 relative bg-dark">
+    <section id="pricing" className="py-20 relative bg-dark transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <span className="text-primary font-semibold tracking-wide uppercase text-sm">
@@ -31,7 +31,7 @@ const Pricing: React.FC = () => {
             {plans?.map((plan) => (
               <div
                 key={plan.id}
-                className={`relative glass-card p-8 rounded-3xl flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 ${
+                className={`relative glass-card p-8 rounded-3xl flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 border border-border ${
                   plan.isPopular ? 'border-2 border-primary shadow-2xl shadow-primary/20' : ''
                 }`}
               >
@@ -42,15 +42,15 @@ const Pricing: React.FC = () => {
                 )}
 
                 <div>
-                  <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
+                  <h3 className="text-2xl font-bold mb-2 text-text-primary">{plan.name}</h3>
                   <div className="flex items-baseline gap-1 mb-6">
-                    <span className="text-4xl font-black text-white">{plan.price}</span>
-                    <span className="text-gray-400 font-medium">{plan.period}</span>
+                    <span className="text-4xl font-black text-text-primary">{plan.price}</span>
+                    <span className="text-text-muted font-medium">{plan.period}</span>
                   </div>
 
                   <ul className="space-y-3 mb-8">
                     {plan.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-center gap-3 text-sm text-gray-300">
+                      <li key={idx} className="flex items-center gap-3 text-sm text-text-secondary font-medium">
                         <div className="bg-primary/20 p-1 rounded-full text-primary">
                           <Check className="w-4 h-4" />
                         </div>
@@ -64,7 +64,7 @@ const Pricing: React.FC = () => {
                   className={`w-full py-3.5 rounded-xl font-bold transition-all duration-200 ${
                     plan.isPopular
                       ? 'btn-primary shadow-lg shadow-primary/30'
-                      : 'bg-white/10 hover:bg-white/20 text-white'
+                      : 'bg-surface hover:bg-surface/80 text-text-primary border border-border'
                   }`}
                 >
                   Choose {plan.name}

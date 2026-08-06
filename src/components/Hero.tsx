@@ -3,9 +3,9 @@ import { ArrowRight, Award, Users, Clock, Zap } from 'lucide-react';
 
 const Hero: React.FC = () => {
   return (
-    <section id="home" className="relative min-h-screen flex items-center overflow-hidden pt-20">
+    <section id="home" className="relative min-h-screen flex items-center overflow-hidden pt-20 bg-dark transition-colors duration-300">
       {/* Animated Glow Elements */}
-      <div className="absolute inset-0 bg-gradient-to-br from-dark via-dark/95 to-primary/10 z-0"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-dark via-surface to-primary/10 z-0"></div>
       <div className="absolute top-20 left-10 w-80 h-80 bg-primary/20 rounded-full blur-[120px] animate-pulse"></div>
       <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/15 rounded-full blur-[140px] animate-pulse delay-1000"></div>
 
@@ -18,7 +18,7 @@ const Hero: React.FC = () => {
                 AI-Powered Performance Platform
               </span>
             </div>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-tight mb-6 tracking-tight">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-tight mb-6 tracking-tight text-text-primary">
               Transform Your
               <span className="gradient-text block mt-1">Body & Performance</span>
             </h1>
@@ -37,23 +37,23 @@ const Hero: React.FC = () => {
               <div className="text-center lg:text-left">
                 <div className="flex items-center justify-center lg:justify-start gap-2 text-primary">
                   <Award className="w-5 h-5" />
-                  <span className="text-2xl font-black text-white">5+</span>
+                  <span className="text-2xl font-black text-text-primary">5+</span>
                 </div>
-                <p className="text-xs text-text-muted mt-1">Years Excellence</p>
+                <p className="text-xs text-text-muted mt-1 font-medium">Years Excellence</p>
               </div>
               <div className="text-center lg:text-left">
                 <div className="flex items-center justify-center lg:justify-start gap-2 text-secondary">
                   <Users className="w-5 h-5" />
-                  <span className="text-2xl font-black text-white">2.5k+</span>
+                  <span className="text-2xl font-black text-text-primary">2.5k+</span>
                 </div>
-                <p className="text-xs text-text-muted mt-1">Active Athletes</p>
+                <p className="text-xs text-text-muted mt-1 font-medium">Active Athletes</p>
               </div>
               <div className="text-center lg:text-left">
                 <div className="flex items-center justify-center lg:justify-start gap-2 text-accent">
                   <Clock className="w-5 h-5" />
-                  <span className="text-2xl font-black text-white">24/7</span>
+                  <span className="text-2xl font-black text-text-primary">24/7</span>
                 </div>
-                <p className="text-xs text-text-muted mt-1">AI Coach Access</p>
+                <p className="text-xs text-text-muted mt-1 font-medium">AI Coach Access</p>
               </div>
             </div>
           </div>
@@ -68,13 +68,13 @@ const Hero: React.FC = () => {
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="absolute -bottom-6 -left-6 glass-card p-5 rounded-2xl flex items-center gap-4 border border-border">
+            <div className="absolute -bottom-6 -left-6 glass-card p-5 rounded-2xl flex items-center gap-4 border border-border shadow-xl">
               <div className="bg-primary/20 p-3 rounded-2xl text-primary">
                 <Users className="w-6 h-6" />
               </div>
               <div>
-                <p className="text-xs text-text-muted">Community Streak</p>
-                <p className="text-xl font-black text-white">12,450 Hours</p>
+                <p className="text-xs text-text-muted font-medium">Community Streak</p>
+                <p className="text-xl font-black text-text-primary">12,450 Hours</p>
               </div>
             </div>
           </div>

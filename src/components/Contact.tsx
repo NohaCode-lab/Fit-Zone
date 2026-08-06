@@ -17,7 +17,6 @@ const Contact: React.FC = () => {
   });
 
   const onSubmit = async (data: ContactFormData) => {
-    // In production SaaS, this dispatches a mutation to NestJS API endpoint
     console.log('Form payload validated by Zod:', data);
     setSubmitted(true);
     reset();
@@ -25,7 +24,7 @@ const Contact: React.FC = () => {
   };
 
   return (
-    <section id="contact" className="py-20 bg-gradient-to-b from-dark to-dark/90">
+    <section id="contact" className="py-20 bg-dark transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <span className="text-primary font-semibold tracking-wide uppercase text-sm">Get In Touch</span>
@@ -36,48 +35,48 @@ const Contact: React.FC = () => {
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Contact Info */}
           <div className="space-y-8">
-            <div className="glass-card p-6 flex items-start gap-4">
+            <div className="glass-card p-6 flex items-start gap-4 border border-border">
               <div className="bg-primary/20 p-3 rounded-full">
                 <MapPin className="w-6 h-6 text-primary" />
               </div>
               <div>
-                <h3 className="text-xl font-semibold mb-1">Visit Us</h3>
-                <p className="text-gray-300">123 Fitness Avenue, Downtown City, 10001</p>
+                <h3 className="text-xl font-semibold mb-1 text-text-primary">Visit Us</h3>
+                <p className="text-text-secondary">123 Fitness Avenue, Downtown City, 10001</p>
               </div>
             </div>
-            <div className="glass-card p-6 flex items-start gap-4">
+            <div className="glass-card p-6 flex items-start gap-4 border border-border">
               <div className="bg-primary/20 p-3 rounded-full">
                 <Phone className="w-6 h-6 text-primary" />
               </div>
               <div>
-                <h3 className="text-xl font-semibold mb-1">Call Us</h3>
-                <p className="text-gray-300">+1 (555) 123-4567</p>
-                <p className="text-gray-400 text-sm">Mon-Sat: 6am - 10pm</p>
+                <h3 className="text-xl font-semibold mb-1 text-text-primary">Call Us</h3>
+                <p className="text-text-secondary">+1 (555) 123-4567</p>
+                <p className="text-text-muted text-sm">Mon-Sat: 6am - 10pm</p>
               </div>
             </div>
-            <div className="glass-card p-6 flex items-start gap-4">
+            <div className="glass-card p-6 flex items-start gap-4 border border-border">
               <div className="bg-primary/20 p-3 rounded-full">
                 <Mail className="w-6 h-6 text-primary" />
               </div>
               <div>
-                <h3 className="text-xl font-semibold mb-1">Email Us</h3>
-                <p className="text-gray-300">hello@fitzone.com</p>
-                <p className="text-gray-400 text-sm">Support 24/7</p>
+                <h3 className="text-xl font-semibold mb-1 text-text-primary">Email Us</h3>
+                <p className="text-text-secondary">hello@fitzone.com</p>
+                <p className="text-text-muted text-sm">Support 24/7</p>
               </div>
             </div>
           </div>
 
           {/* Contact Form with React Hook Form + Zod */}
-          <form onSubmit={handleSubmit(onSubmit)} className="glass-card p-6 md:p-8">
-            <h3 className="text-2xl font-bold mb-6">Send a Message</h3>
+          <form onSubmit={handleSubmit(onSubmit)} className="glass-card p-6 md:p-8 border border-border">
+            <h3 className="text-2xl font-bold mb-6 text-text-primary">Send a Message</h3>
             <div className="space-y-5">
               <div>
-                <label className="block text-sm font-medium mb-2">Full Name</label>
+                <label className="block text-sm font-medium mb-2 text-text-secondary">Full Name</label>
                 <input
                   type="text"
                   {...register('name')}
-                  className={`w-full bg-white/5 border rounded-lg px-4 py-3 focus:outline-none transition ${
-                    errors.name ? 'border-red-500 focus:border-red-500' : 'border-white/10 focus:border-primary'
+                  className={`w-full bg-surface border rounded-lg px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-none transition ${
+                    errors.name ? 'border-red-500 focus:border-red-500' : 'border-border focus:border-primary'
                   }`}
                   placeholder="John Doe"
                 />
@@ -87,12 +86,12 @@ const Contact: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">Email Address</label>
+                <label className="block text-sm font-medium mb-2 text-text-secondary">Email Address</label>
                 <input
                   type="email"
                   {...register('email')}
-                  className={`w-full bg-white/5 border rounded-lg px-4 py-3 focus:outline-none transition ${
-                    errors.email ? 'border-red-500 focus:border-red-500' : 'border-white/10 focus:border-primary'
+                  className={`w-full bg-surface border rounded-lg px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-none transition ${
+                    errors.email ? 'border-red-500 focus:border-red-500' : 'border-border focus:border-primary'
                   }`}
                   placeholder="hello@example.com"
                 />
@@ -102,12 +101,12 @@ const Contact: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">Your Message</label>
+                <label className="block text-sm font-medium mb-2 text-text-secondary">Your Message</label>
                 <textarea
                   rows={4}
                   {...register('message')}
-                  className={`w-full bg-white/5 border rounded-lg px-4 py-3 focus:outline-none transition ${
-                    errors.message ? 'border-red-500 focus:border-red-500' : 'border-white/10 focus:border-primary'
+                  className={`w-full bg-surface border rounded-lg px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-none transition ${
+                    errors.message ? 'border-red-500 focus:border-red-500' : 'border-border focus:border-primary'
                   }`}
                   placeholder="Tell us about your fitness goals..."
                 ></textarea>
