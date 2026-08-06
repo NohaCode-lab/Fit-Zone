@@ -22,8 +22,11 @@
 ![Fit-Zone Member Dashboard & AI Fitness Coach](docs/images/dashboard_preview.jpg)
 *Figure 1: Fit-Zone Member Portal showing Active Fitness Analytics & RAG Vector AI Coach Chat*
 
+![Fit-Zone Super Admin & Management Portal](docs/images/admin_preview.jpg)
+*Figure 2: Super Admin & Gym Management Portal showing Member Roster, Subscription Billing & Telemetry*
+
 ![Fit-Zone Responsive Interface Showcase](docs/images/mobile_preview.jpg)
-*Figure 2: Multi-device Responsive Interface featuring Dark & Light Theme Switcher*
+*Figure 3: Multi-device Responsive Interface featuring Dark & Light Theme Switcher*
 
 ---
 
