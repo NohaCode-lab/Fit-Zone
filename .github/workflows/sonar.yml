@@ -13,6 +13,8 @@ jobs:
   frontend-analysis:
     name: Frontend SonarCloud Audit
     runs-on: ubuntu-latest
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     steps:
       - uses: actions/checkout@v4
@@ -35,7 +37,7 @@ jobs:
         run: npm test
 
       - name: SonarCloud Frontend Scan
-        if: ${{ secrets.SONAR_TOKEN != '' }}
+        if: ${{ env.SONAR_TOKEN != '' }}
         uses: SonarSource/sonarcloud-github-action@v3.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -54,6 +56,7 @@ jobs:
       NODE_ENV: test
       JWT_SECRET: "ci-secret-key-min-32-characters-for-testing-purposes"
       DATABASE_URL: "postgresql://fitzone_admin:SecurePass123!@localhost:5432/fitzone_test?schema=public"
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     steps:
       - uses: actions/checkout@v4
@@ -84,7 +87,7 @@ jobs:
         run: npm test
 
       - name: SonarCloud Backend Scan
-        if: ${{ secrets.SONAR_TOKEN != '' }}
+        if: ${{ env.SONAR_TOKEN != '' }}
         uses: SonarSource/sonarcloud-github-action@v3.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
