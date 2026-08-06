@@ -22,9 +22,66 @@
     scroll-behavior: smooth;
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     color-scheme: dark;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
+  
   body {
-    @apply bg-dark text-text-primary antialiased selection:bg-primary selection:text-white;
+    @apply bg-dark text-text-primary antialiased selection:bg-primary selection:text-white transition-colors duration-300;
+  }
+
+  /* Light Theme Class Overrides */
+  html.light {
+    color-scheme: light;
+  }
+
+  html.light body {
+    background-color: #F8FAFC;
+    color: #0F172A;
+  }
+
+  html.light .bg-dark,
+  html.light .bg-dark\/90,
+  html.light .bg-dark\/95 {
+    background-color: #F8FAFC !important;
+  }
+
+  html.light .bg-surface,
+  html.light .bg-surface\/80 {
+    background-color: #FFFFFF !important;
+  }
+
+  html.light .bg-card,
+  html.light .bg-card\/90 {
+    background-color: rgba(241, 245, 249, 0.95) !important;
+  }
+
+  html.light .border-border,
+  html.light .border-white\/10 {
+    border-color: #E2E8F0 !important;
+  }
+
+  html.light .text-text-primary,
+  html.light .text-white {
+    color: #0F172A !important;
+  }
+
+  html.light .text-text-secondary,
+  html.light .text-gray-300,
+  html.light .text-gray-400 {
+    color: #334155 !important;
+  }
+
+  html.light .text-text-muted,
+  html.light .text-gray-500 {
+    color: #64748B !important;
+  }
+
+  html.light .bg-white\/5 {
+    background-color: rgba(15, 23, 42, 0.05) !important;
+  }
+
+  html.light .bg-white\/10 {
+    background-color: rgba(15, 23, 42, 0.1) !important;
   }
 }
 
@@ -49,7 +106,7 @@
   }
 
   .btn-outline {
-    @apply px-6 py-3 border-2 border-secondary text-secondary rounded-full font-bold hover:bg-secondary hover:text-dark transition-all duration-300 hover:scale-105 active:scale-100;
+    @apply px-6 py-3 border-2 border-primary text-primary rounded-full font-bold hover:bg-primary hover:text-white transition-all duration-300 hover:scale-105 active:scale-100;
   }
 
   .btn-accent {
@@ -58,7 +115,7 @@
 
   /* Section Typography */
   .section-title {
-    @apply text-3xl md:text-5xl font-black text-center mb-4 tracking-tight;
+    @apply text-3xl md:text-5xl font-black text-center mb-4 tracking-tight text-text-primary;
   }
 
   .section-subtitle {

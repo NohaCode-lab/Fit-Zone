@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Menu, X, Dumbbell, User as UserIcon, LogOut, LayoutDashboard } from 'lucide-react';
+import { Menu, X, Dumbbell, User as UserIcon, LogOut, LayoutDashboard, Sun, Moon } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../features/auth/hooks/useAuth';
 import { LoginModal } from '../features/auth/components/LoginModal';
+import { useTheme } from '../shared/theme/useTheme';
 
 interface NavLink {
   name: string;
@@ -16,7 +17,7 @@ const Logo: React.FC = () => (
       <div className="absolute inset-0 bg-cta-gradient blur-md opacity-70 group-hover:opacity-100 transition-opacity rounded-full"></div>
       <Dumbbell className="relative w-8 h-8 text-primary stroke-[2]" />
     </div>
-    <span className="text-2xl font-black tracking-tight text-white">
+    <span className="text-2xl font-black tracking-tight text-text-primary">
       Fit<span className="gradient-text">Zone</span>
     </span>
   </div>
@@ -26,6 +27,7 @@ const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isLoginOpen, setIsLoginOpen] = useState<boolean>(false);
   const { user, isAuthenticated, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -54,7 +56,7 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      <nav className="fixed w-full z-40 bg-dark/90 backdrop-blur-xl border-b border-border">
+      <nav className="fixed w-full z-40 bg-dark/90 backdrop-blur-xl border-b border-border transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16 md:h-20">
             <Link to="/" onClick={(e) => handleNavClick(e as any, navLinks[0])} className="flex items-center">
@@ -62,7 +64,7 @@ const Navbar: React.FC = () => {
             </Link>
 
             {/* Desktop Menu */}
-            <div className="hidden md:flex items-center space-x-8">
+            <div className="hidden md:flex items-center space-x-6">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
@@ -74,11 +76,21 @@ const Navbar: React.FC = () => {
                 </a>
               ))}
 
+              {/* Theme Toggle Button */}
+              <button
+                onClick={toggleTheme}
+                className="p-2.5 rounded-full bg-surface hover:bg-surface/80 border border-border text-text-secondary hover:text-primary transition-all duration-200"
+                title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
+                aria-label="Toggle dark/light theme"
+              >
+                {theme === 'dark' ? <Sun size={18} className="text-warning" /> : <Moon size={18} className="text-primary" />}
+              </button>
+
               {isAuthenticated ? (
                 <div className="flex items-center gap-4">
                   <Link
                     to="/dashboard"
-                    className="flex items-center gap-2 px-4 py-2 bg-surface hover:bg-surface/80 border border-border rounded-full text-xs font-black text-white transition shadow-sm"
+                    className="flex items-center gap-2 px-4 py-2 bg-surface hover:bg-surface/80 border border-border rounded-full text-xs font-black text-text-primary transition shadow-sm"
                   >
                     <LayoutDashboard size={14} className="text-primary" /> {user?.firstName || 'Dashboard'}
                   </Link>
@@ -100,11 +112,18 @@ const Navbar: React.FC = () => {
               )}
             </div>
 
-            {/* Mobile Menu Button */}
-            <div className="md:hidden">
+            {/* Mobile Menu & Theme Button */}
+            <div className="md:hidden flex items-center gap-3">
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-full bg-surface border border-border text-text-secondary"
+                aria-label="Toggle theme"
+              >
+                {theme === 'dark' ? <Sun size={18} className="text-warning" /> : <Moon size={18} className="text-primary" />}
+              </button>
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="text-text-secondary hover:text-white focus:outline-none"
+                className="text-text-secondary hover:text-text-primary focus:outline-none"
                 aria-label="Toggle navigation menu"
               >
                 {isOpen ? <X size={28} /> : <Menu size={28} />}

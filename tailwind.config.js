@@ -4,6 +4,7 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
@@ -11,7 +12,7 @@ export default {
           DEFAULT: '#FF6B00',
           hover: '#E65C00',
         },
-        secondary: '#A3FF12',
+        secondary: '#8CE600',
         accent: '#00D9FF',
         success: '#22C55E',
         warning: '#FACC15',
