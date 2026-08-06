@@ -9,11 +9,13 @@ on:
       - main
 
 jobs:
-  sonar:
+
+  frontend-analysis:
+    name: Frontend SonarCloud Audit
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -26,31 +28,13 @@ jobs:
       - name: Install Frontend Dependencies
         run: npm ci
 
-      - name: Install Backend Dependencies
-        run: |
-          cd backend
-          npm ci
-
-      - name: Run ESLint Linter
+      - name: Run Frontend Code Linting
         run: npm run lint
 
       - name: Run Frontend Tests
         run: npm test
 
-      - name: Run Backend Tests
-        run: |
-          cd backend
-          npm test
-
-      - name: Build Frontend Project
-        run: npm run build
-
-      - name: Build Backend Project
-        run: |
-          cd backend
-          npm run build
-
-      - name: SonarCloud Scan
+      - name: SonarCloud Frontend Scan
         if: ${{ secrets.SONAR_TOKEN != '' }}
         uses: SonarSource/sonarcloud-github-action@v3.1.0
         env:
@@ -58,6 +42,55 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey=Fit-Zone
+            -Dsonar.projectKey=Fit-Zone-Frontend
             -Dsonar.organization=nohacode-lab
-            -Dsonar.sources=src,backend/src
+            -Dsonar.sources=src
+
+
+  backend-analysis:
+    name: Backend SonarCloud Audit
+    runs-on: ubuntu-latest
+    env:
+      NODE_ENV: test
+      JWT_SECRET: "ci-secret-key-min-32-characters-for-testing-purposes"
+      DATABASE_URL: "postgresql://fitzone_admin:SecurePass123!@localhost:5432/fitzone_test?schema=public"
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js (LTS v22)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install Backend Dependencies
+        working-directory: backend
+        run: npm ci
+
+      - name: Generate Prisma Client
+        working-directory: backend
+        run: npx prisma generate
+
+      - name: Run Backend Code Linting
+        working-directory: backend
+        run: npm run lint
+
+      - name: Run Backend Tests
+        working-directory: backend
+        run: npm test
+
+      - name: SonarCloud Backend Scan
+        if: ${{ secrets.SONAR_TOKEN != '' }}
+        uses: SonarSource/sonarcloud-github-action@v3.1.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=Fit-Zone-Backend
+            -Dsonar.organization=nohacode-lab
+            -Dsonar.sources=backend/src
