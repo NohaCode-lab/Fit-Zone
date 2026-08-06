@@ -1,0 +1,8 @@
+# GitHub Linguist Language & Attribute Configuration for Fit-Zone
+docs/* linguist-documentation
+*.jpg linguist-documentation
+*.png linguist-documentation
+dist/* linguist-vendored
+backend/dist/* linguist-vendored
+package-lock.json linguist-vendored
+backend/package-lock.json linguist-vendored
