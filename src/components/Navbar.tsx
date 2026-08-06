@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Menu, X, Dumbbell, User as UserIcon, LogOut, LayoutDashboard } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../features/auth/hooks/useAuth';
 import { LoginModal } from '../features/auth/components/LoginModal';
 
 interface NavLink {
   name: string;
   href: string;
+  targetId: string;
 }
 
 const Logo: React.FC = () => (
@@ -25,21 +26,38 @@ const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isLoginOpen, setIsLoginOpen] = useState<boolean>(false);
   const { user, isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const navLinks: NavLink[] = [
-    { name: 'Home', href: '/#home' },
-    { name: 'Schedule', href: '/#schedule' },
-    { name: 'Trainers', href: '/#trainers' },
-    { name: 'Pricing', href: '/#pricing' },
-    { name: 'Contact', href: '/#contact' },
+    { name: 'Home', href: '/#home', targetId: 'home' },
+    { name: 'Schedule', href: '/#schedule', targetId: 'schedule' },
+    { name: 'Trainers', href: '/#trainers', targetId: 'trainers' },
+    { name: 'Pricing', href: '/#pricing', targetId: 'pricing' },
+    { name: 'Contact', href: '/#contact', targetId: 'contact' },
   ];
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, link: NavLink) => {
+    e.preventDefault();
+    setIsOpen(false);
+    if (location.pathname !== '/') {
+      navigate('/#' + link.targetId);
+    } else {
+      const el = document.getElementById(link.targetId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+  };
 
   return (
     <>
       <nav className="fixed w-full z-40 bg-dark/90 backdrop-blur-xl border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16 md:h-20">
-            <Link to="/" className="flex items-center">
+            <Link to="/" onClick={(e) => handleNavClick(e as any, navLinks[0])} className="flex items-center">
               <Logo />
             </Link>
 
@@ -49,6 +67,7 @@ const Navbar: React.FC = () => {
                 <a
                   key={link.name}
                   href={link.href}
+                  onClick={(e) => handleNavClick(e, link)}
                   className="text-text-secondary hover:text-primary transition-colors duration-200 font-bold text-sm"
                 >
                   {link.name}
@@ -101,7 +120,7 @@ const Navbar: React.FC = () => {
                   <a
                     key={link.name}
                     href={link.href}
-                    onClick={() => setIsOpen(false)}
+                    onClick={(e) => handleNavClick(e, link)}
                     className="text-text-secondary hover:text-primary transition-colors duration-200 font-bold px-2 text-sm"
                   >
                     {link.name}

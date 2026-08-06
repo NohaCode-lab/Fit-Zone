@@ -1,5 +1,5 @@
-import React, { Suspense, lazy } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import React, { Suspense, lazy, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { LoadingFallback } from '../../components/ui/LoadingFallback';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
@@ -13,9 +13,28 @@ const AiCoachChat = lazy(() =>
   import('../../features/ai-coach/components/AiCoachChat').then((m) => ({ default: m.AiCoachChat }))
 );
 
+const ScrollToHash: React.FC = () => {
+  const { hash, pathname } = useLocation();
+
+  useEffect(() => {
+    if (hash) {
+      const targetId = hash.replace('#', '');
+      const el = document.getElementById(targetId);
+      if (el) {
+        setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 100);
+      }
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [hash, pathname]);
+
+  return null;
+};
+
 export const AppRouter: React.FC = () => {
   return (
     <BrowserRouter>
+      <ScrollToHash />
       <Navbar />
       <Suspense fallback={<LoadingFallback />}>
         <Routes>
