@@ -24,9 +24,10 @@ services:
       - "3000:3000"
     environment:
       NODE_ENV: production
-      DATABASE_URL: "postgresql://fitzone_admin:SecurePass123!@postgres:5432/fitzone_db?schema=public"
+      DATABASE_URL: "postgresql://${POSTGRES_USER:-fitzone_admin}:${POSTGRES_PASSWORD:-SecurePass123!}@postgres:5432/${POSTGRES_DB:-fitzone_db}?schema=public"
       REDIS_URL: "redis://redis:6379"
-      JWT_SECRET: "FitZoneSuperSecretKey2026!"
+      JWT_SECRET: "${JWT_SECRET:-FitZoneProductionSecureSecretKey2026!}"
+      CORS_ALLOWED_ORIGINS: "${CORS_ALLOWED_ORIGINS:-http://localhost:8080,http://localhost:5173}"
     depends_on:
       postgres:
         condition: service_healthy
@@ -43,15 +44,15 @@ services:
     image: ankane/pgvector:v0.5.1
     container_name: fit-zone-postgres
     environment:
-      POSTGRES_USER: fitzone_admin
-      POSTGRES_PASSWORD: SecurePass123!
-      POSTGRES_DB: fitzone_db
+      POSTGRES_USER: ${POSTGRES_USER:-fitzone_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-SecurePass123!}
+      POSTGRES_DB: ${POSTGRES_DB:-fitzone_db}
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U fitzone_admin -d fitzone_db"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-fitzone_admin} -d ${POSTGRES_DB:-fitzone_db}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -87,7 +88,7 @@ services:
     ports:
       - "3001:3000"
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
     depends_on:
       - prometheus
 

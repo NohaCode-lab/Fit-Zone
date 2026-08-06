@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import Redis from 'ioredis';
 
-export interface ReadinessCheckResult {
+export interface HealthCheckResult {
   status: 'ok' | 'error';
+  uptimeSeconds: number;
   checks: {
     database: 'up' | 'down';
     redis: 'up' | 'down';
@@ -13,7 +15,23 @@ export interface ReadinessCheckResult {
 
 @Injectable()
 export class HealthService {
-  constructor(private readonly prisma: PrismaService) {}
+  private redisClient: Redis | null = null;
+
+  constructor(@Inject(PrismaService) private readonly prisma: PrismaService) {
+    const redisUrl = process.env.REDIS_URL;
+    if (redisUrl) {
+      try {
+        this.redisClient = new Redis(redisUrl, {
+          lazyConnect: true,
+          maxRetriesPerRequest: 1,
+          connectTimeout: 2000,
+          retryStrategy: () => null,
+        });
+      } catch {
+        this.redisClient = null;
+      }
+    }
+  }
 
   async checkLiveness() {
     return {
@@ -23,21 +41,39 @@ export class HealthService {
     };
   }
 
-  async checkReadiness(): Promise<ReadinessCheckResult> {
+  async checkReadiness(): Promise<HealthCheckResult> {
     let databaseStatus: 'up' | 'down' = 'up';
     try {
-      await this.prisma.$queryRaw`SELECT 1`;
+      if (this.prisma && typeof this.prisma.$queryRaw === 'function') {
+        await (this.prisma.$queryRaw as any)`SELECT 1`;
+      } else {
+        databaseStatus = 'down';
+      }
     } catch {
       databaseStatus = 'down';
+    }
+
+    let redisStatus: 'up' | 'down' = 'up';
+    if (this.redisClient) {
+      try {
+        if (this.redisClient.status === 'wait') {
+          await this.redisClient.connect();
+        }
+        const pingResponse = await this.redisClient.ping();
+        redisStatus = pingResponse === 'PONG' ? 'up' : 'down';
+      } catch {
+        redisStatus = 'down';
+      }
     }
 
     const isOk = databaseStatus === 'up';
 
     return {
       status: isOk ? 'ok' : 'error',
+      uptimeSeconds: Math.floor(process.uptime()),
       checks: {
         database: databaseStatus,
-        redis: 'up',
+        redis: redisStatus,
         ai: 'available',
       },
       timestamp: new Date().toISOString(),

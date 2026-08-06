@@ -9,9 +9,14 @@ async function bootstrap() {
   // Global Routing Prefix
   app.setGlobalPrefix('api/v1');
 
-  // CORS Configuration
+  // Dynamic CORS Configuration
+  const allowedOriginsEnv = process.env.CORS_ALLOWED_ORIGINS;
+  const allowedOrigins = allowedOriginsEnv
+    ? allowedOriginsEnv.split(',').map((origin) => origin.trim())
+    : ['http://localhost:8080', 'http://localhost:5173', 'http://localhost:3000'];
+
   app.enableCors({
-    origin: ['http://localhost:8080', 'http://localhost:5173', 'http://localhost:3000'],
+    origin: allowedOrigins,
     credentials: true,
   });
 
